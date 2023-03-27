@@ -19,6 +19,9 @@
 .DS_Store
 *.pem
 
+firebase/config.ts
+.env
+
 # debug
 npm-debug.log*
 yarn-debug.log*
