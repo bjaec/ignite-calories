@@ -391,6 +391,15 @@ export default function Home() {
               />
             </div>
             <div className="flex w-full items-center gap-4">
+              <label className="text-lg w-32 text-left">Email: </label>
+              <input
+                className="border border-gray-200 rounded-lg px-4 py-2 w-1/2"
+                placeholder="Email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
+              />
+            </div>
+            <div className="flex w-full items-center gap-4">
               <label className="text-lg w-32 text-left">Year: </label>
               <input
                 className="border border-gray-200 rounded-lg px-4 py-2 w-1/2"
