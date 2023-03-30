@@ -13,12 +13,49 @@ import {
   GoogleAuthProvider,
   signOut,
 } from "firebase/auth";
-import { getFirestore, setDoc, doc, getDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  setDoc,
+  doc,
+  getDoc,
+  Timestamp,
+  arrayUnion,
+  updateDoc,
+} from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
+
+type Order = {
+  name: string;
+  price: string;
+  timestamp: Date;
+};
+
+const restaurants: { name: string; food: string; price: number }[] = [
+  {
+    name: "Devils Krafthouse",
+    food: "BBQ Chicken Burger",
+    price: 12.99,
+  },
+  {
+    name: "Tandoor",
+    food: "Vegetable Samosa",
+    price: 9.89,
+  },
+  {
+    name: "Il Forno",
+    food: "California (Teriyaki Tofu)",
+    price: 11.49,
+  },
+  {
+    name: "The Skillet",
+    food: "Blue Plate Scramble",
+    price: 9.45,
+  },
+];
 
 export default function Home() {
   const [loadingUserdata, setLoadingUserdata] = useState<boolean>(true);
@@ -28,18 +65,11 @@ export default function Home() {
   const [biography, setBiography] = useState("");
   const [year, setYear] = useState("");
   const [email, setEmail] = useState("");
-  const [foodpoints, setFoodpoints] = useState(0);
+  const [foodpoints, setFoodpoints] = useState<number>(0);
   const [image, setImage] = useState<string | null>(null);
-  const [orderHistory, setOrderHistory] = useState([
-    {
-      id: 0,
-      name: "Devils Krafthouse Burger, 1 large fry",
-      price: "$10.00",
-      date: "Mar 26",
-    },
-  ]);
+  const [orderHistory, setOrderHistory] = useState<Order[] | null>(null);
 
-  // Get profile photo
+  // Get all user data
   useEffect(() => {
     if (!user) return;
 
@@ -113,8 +143,23 @@ export default function Home() {
         });
     }
 
+    async function getOrderHistory() {
+      const docRef = doc(firestore, "orders", user.uid);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setOrderHistory(
+          data?.orderList.sort((a: any, b: any) => b.timestamp - a.timestamp)
+        );
+      } else {
+        setOrderHistory(null);
+      }
+    }
+
     async function loadEverything() {
       await getSettings();
+      await getOrderHistory();
       await getImage();
       setLoadingUserdata(false);
     }
@@ -154,6 +199,49 @@ export default function Home() {
     uploadBytes(storageRef, img as File).then((snapshot) => {
       setRefresh(!refresh);
     });
+  }
+
+  async function orderItem(row: any) {
+    if (row.price > foodpoints) {
+      toast("Not enough foodpoints", {
+        icon: "❌",
+      });
+      return;
+    }
+
+    try {
+      await setDoc(
+        doc(firestore, "orders", user.uid),
+        {
+          orderList: arrayUnion({
+            name: row.name + ": " + row.food,
+            price: row.price,
+            timestamp: Timestamp.fromDate(new Date()),
+          }),
+        },
+        { merge: true }
+      );
+
+      // Update foodpoints
+      await setDoc(
+        doc(firestore, "users", user.uid),
+        {
+          foodpoints: foodpoints - row.price,
+        },
+        { merge: true }
+      );
+
+      toast("Ordered item", {
+        icon: "✅",
+      });
+
+      // Refresh to update the order history
+      setRefresh(!refresh);
+    } catch (error) {
+      toast("Could not order item", {
+        icon: "❌",
+      });
+    }
   }
 
   const signInWithGoogle = () => {
@@ -232,29 +320,6 @@ export default function Home() {
     );
   }
 
-  const restaurants = [
-    {
-      name: "Devils Krafthouse",
-      food: "BBQ Chicken Burger",
-      price: "$10.00",
-    },
-    {
-      name: "Devils Krafthouse",
-      food: "BBQ Chicken Burger",
-      price: "$10.00",
-    },
-    {
-      name: "Devils Krafthouse",
-      food: "BBQ Chicken Burger",
-      price: "$10.00",
-    },
-    {
-      name: "Devils Krafthouse",
-      food: "BBQ Chicken Burger",
-      price: "$10.00",
-    },
-  ];
-
   // Renders this if fetchnig user data
   if (user && loadingUserdata) {
     return (
@@ -325,10 +390,13 @@ export default function Home() {
                   {row.food}
                 </td>
                 <td className="border border-gray-200 p-2 text-center">
-                  {row.price}
+                  ${row.price}
                 </td>
                 <td className="border border-gray-200 p-2 text-center">
-                  <button className="bg-black rounded-lg px-4 py-2 text-white">
+                  <button
+                    className="bg-black rounded-lg px-4 py-2 text-white"
+                    onClick={() => orderItem(row)}
+                  >
                     order
                   </button>
                 </td>
@@ -341,30 +409,34 @@ export default function Home() {
         <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">
           Order History
         </h2>
-        <table className="w-full border-collapse border border-gray-200 mt-2">
-          <thead>
-            <tr className="border border-gray-200">
-              <th className="border border-gray-200 p-2">Order</th>
-              <th className="border border-gray-200 p-2">Price</th>
-              <th className="border border-gray-200 p-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orderHistory.map((row: any, i: number) => (
-              <tr key={i} className="border border-gray-200">
-                <td className="border border-gray-200 p-2 text-center">
-                  {row.name}
-                </td>
-                <td className="border border-gray-200 p-2 text-center">
-                  {row.price}
-                </td>
-                <td className="border border-gray-200 p-2 text-center">
-                  {row.date}
-                </td>
+        {orderHistory ? (
+          <table className="w-full border-collapse border border-gray-200 mt-2">
+            <thead>
+              <tr className="border border-gray-200">
+                <th className="border border-gray-200 p-2">Order</th>
+                <th className="border border-gray-200 p-2">Price</th>
+                <th className="border border-gray-200 p-2">Date</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orderHistory.map((row: any, i: number) => (
+                <tr key={i} className="border border-gray-200">
+                  <td className="border border-gray-200 p-2 text-center">
+                    {row.name}
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    ${row.price}
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    {row.timestamp.toDate().toLocaleString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>No order history. Order something!</p>
+        )}
 
         {/* Settings */}
         <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">
