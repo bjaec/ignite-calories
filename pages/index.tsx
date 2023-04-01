@@ -32,8 +32,10 @@ const storage = getStorage(app);
 type Order = {
   name: string;
   price: string;
-  calorie: string;
+  calories: string;
   protein: string;
+  carbs: string;
+  sugars: string;
 };
 
 const restaurants: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
@@ -216,20 +218,16 @@ export default function Home() {
   }
 
   async function orderItem(row: any) {
-    if (row.price > foodpoints) {
-      toast("Not enough foodpoints", {
-        icon: "❌",
-      });
-      return;
-    }
-
     try {
       await setDoc(
         doc(firestore, "orders", user.uid),
         {
           orderList: arrayUnion({
             name: row.name + ": " + row.food,
-            price: row.price,
+            calories: row.calories,
+            protein: row.protein,
+            carbs: row.carbs,
+            sugars: row.sugars,
             timestamp: Timestamp.fromDate(new Date()),
           }),
         },
@@ -370,16 +368,13 @@ export default function Home() {
             <h1 className="pt-20 text-center text-3xl">
               Nutrition Tracker
             </h1>
-            <h3 className="pt-4 text-xl text-gray-700">
-              Remaking Mobile Order with Firebase
-            </h3>
             <a
               href="https://github.com/JJZFIVE"
               rel="noreferrer"
               target="_blank"
               className="w-fit mt-3"
             >
-              <p className=" text-gray-600 text-xs mt-3">By Joe Zakielarz</p>
+              <p className=" text-gray-600 text-xs mt-3">By Josh Chen, Bryant Chung, Dylan Mitchell</p>
             </a>
 
             <div className="my-20 border-t-2 border-gray-300" />
@@ -473,8 +468,10 @@ export default function Home() {
               <thead>
                 <tr className="border border-gray-200">
                   <th className="border border-gray-200 p-2">Order</th>
-                  <th className="border border-gray-200 p-2">Price</th>
-                  <th className="border border-gray-200 p-2">Date</th>
+                  <th className="border border-gray-200 p-2">Calories</th>
+                  <th className="border border-gray-200 p-2">Protein</th>
+                  <th className="border border-gray-200 p-2">Carbs</th>
+                  <th className="border border-gray-200 p-2">Sugar</th>
                 </tr>
               </thead>
               <tbody>
@@ -484,10 +481,16 @@ export default function Home() {
                       {row.name}
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
-                      ${row.price}
+                      {row.calories}
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
-                      {row.timestamp.toDate().toLocaleString()}
+                      {row.protein}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.carbs}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.sugars}
                     </td>
                   </tr>
                 ))}
