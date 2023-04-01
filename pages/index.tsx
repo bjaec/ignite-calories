@@ -32,29 +32,34 @@ const storage = getStorage(app);
 type Order = {
   name: string;
   price: string;
-  timestamp: Date;
+  calorie: string;
+  protein: string;
 };
 
-const restaurants: { name: string; food: string; price: number }[] = [
+const restaurants: { name: string; food: string; price: number, nutrition: string }[] = [
   {
     name: "Devils Krafthouse",
     food: "BBQ Chicken Burger",
     price: 12.99,
+    nutrition: "100 calories",
   },
   {
     name: "Tandoor",
     food: "Vegetable Samosa",
     price: 9.89,
+    nutrition: "100 calories",
   },
   {
     name: "Il Forno",
     food: "California (Teriyaki Tofu)",
     price: 11.49,
+    nutrition: "100 calories",
   },
   {
     name: "The Skillet",
     food: "Blue Plate Scramble",
     price: 9.45,
+    nutrition: "100 calories",
   },
 ];
 
@@ -418,6 +423,7 @@ export default function Home() {
                 <th className="border border-gray-200 p-2">Name</th>
                 <th className="border border-gray-200 p-2">Food</th>
                 <th className="border border-gray-200 p-2">Price</th>
+                <th className="border border-gray-200 p-2">Nutrition</th>
                 <th className="border border-gray-200 p-2">Order</th>
               </tr>
             </thead>
@@ -432,6 +438,9 @@ export default function Home() {
                   </td>
                   <td className="border border-gray-200 p-2 text-center">
                     ${row.price}
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    {row.nutrition}
                   </td>
                   <td className="border border-gray-200 p-2 text-center">
                     <button
