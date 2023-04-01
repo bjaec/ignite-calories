@@ -517,7 +517,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                <tr ClassName = "border border-gray-200">
+                <tr className = "border border-gray-200">
                   <td className="border border-gray-200 p-2 text-center">
                     Lifetime Total
                   </td>
