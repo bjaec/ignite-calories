@@ -38,7 +38,7 @@ type Order = {
   sugars: string;
 };
 
-const restaurants: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
+const restaurantsOG: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
   {
     name: "Devils Krafthouse",
     food: "BBQ Chicken Burger",
