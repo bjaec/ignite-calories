@@ -40,7 +40,7 @@ type Order = {
   sugars: string;
 };
 
-const restaurantsOG: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
+const restaurants: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
   {
     name: "Devils Krafthouse",
     food: "BBQ Chicken Burger",
@@ -85,6 +85,8 @@ export default function Home() {
   const [email, setEmail] = useState("");
   const [foodpoints, setFoodpoints] = useState<number>(0);
   const [image, setImage] = useState<string | null>(null);
+  const [nutritionalMetrics, setNutritionalMetrics] = useState<Order[] | null>(null); //initialized with value of null
+  //hold array of 'Order' objects, setter function will update the values
   const [orderHistory, setOrderHistory] = useState<Order[] | null>(null);
 
   // Get all user data
@@ -170,8 +172,10 @@ export default function Home() {
         setOrderHistory(
           data?.orderList.sort((a: any, b: any) => b.timestamp - a.timestamp)
         );
+
       } else {
         setOrderHistory(null);
+        setNutritionalMetrics(null);
       }
     }
 
@@ -473,6 +477,57 @@ export default function Home() {
               ))}
             </tbody>
           </table>
+
+          {/* Nutritional Metrics */}
+          <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">Nutritional Metrics</h2>
+            
+          {nutritionalMetrics ? (
+            <table className="w-full border-collapse border border-gray-200 mt-2">
+              <thead>
+                <tr className="border border-gray-200">
+                  <th className="border border-gray-200 p-2">Total Calories</th>
+                  <th className="border border-gray-200 p-2">Average Calories Per Day</th>
+                  <th className="border border-gray-200 p-2">Average Protein Per Day</th>
+                  <th className="border border-gray-200 p-2">Average Carbs Per Day</th>
+                  <th className="border border-gray-200 p-2">Average Sugar Intake Per Day</th>
+                </tr>
+              </thead>
+              <tbody>
+                {nutritionalMetrics.map((row: any, i: number) => (
+                  <tr key={i} className="border border-gray-200">
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.name}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.calories}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.protein}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.carbs}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.sugars}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {row.timestamp.toDate().toLocaleString()}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      <button
+                        className="bg-black rounded-lg px-4 py-2 text-white"
+                        onClick={() => removeItem(row)}
+                      >
+                        remove
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p>No order history. Order something!</p> //if nothing in the order
+          )}
 
           {/* Order History */}
           <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">Order History</h2>
