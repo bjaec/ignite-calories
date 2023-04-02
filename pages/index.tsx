@@ -590,9 +590,9 @@ export default function Home() {
                 <th className="border border-gray-200 p-2">Name</th>
                 <th className="border border-gray-200 p-2">Food</th>
                 <th className="border border-gray-200 p-2">Calories</th>
-                <th className="border border-gray-200 p-2">Protein</th>
-                <th className="border border-gray-200 p-2">Carbs</th>
-                <th className="border border-gray-200 p-2">Sugars</th>
+                <th className="border border-gray-200 p-2">Protein (g)</th>
+                <th className="border border-gray-200 p-2">Carbs (g)</th>
+                <th className="border border-gray-200 p-2">Sugars (g)</th>
                 <th className="border border-gray-200 p-2">Order</th>
               </tr>
             </thead>
