@@ -88,6 +88,10 @@ export default function Home() {
   const [nutritionalMetrics, setNutritionalMetrics] = useState<Order[] | null>(null); //initialized with value of null
   //hold array of 'Order' objects, setter function will update the values
   const [orderHistory, setOrderHistory] = useState<Order[] | null>(null);
+  const [totalCalories, setTotalCalories] = useState(0);
+  const [totalProtein, setTotalProtein] = useState(0);
+  const [totalCarbs, setTotalCarbs] = useState(0);
+  const [totalSugars, setTotalSugars] = useState(0);
 
   // Get all user data
   useEffect(() => {
@@ -189,6 +193,28 @@ export default function Home() {
     loadEverything();
   }, [user, refresh]);
 
+  useEffect(() => {
+    if (orderHistory) {
+      const caloriesSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.calories, 0);
+      setTotalCalories(caloriesSum);
+      
+      const proteinSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.protein, 0);
+      setTotalProtein(proteinSum);
+      
+      const carbsSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.carbs, 0);
+      setTotalCarbs(carbsSum);
+      
+      const sugarSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.sugars, 0);
+      setTotalSugars(sugarSum);
+    } else {
+      setTotalCalories(0);
+      setTotalProtein(0);
+      setTotalCarbs(0);
+      setTotalSugars(0);
+    }
+  }, [orderHistory]);
+
+
   async function saveSettings() {
     if (!user) return;
 
@@ -268,7 +294,7 @@ export default function Home() {
     try {
       await updateDoc(doc(firestore, 'orders', user.uid), {orderList: arrayRemove(row)});
     } catch (error) {
-      console.error('Error deleting item: ', error);
+      console.error('Error removing item: ', error);
     }
     toast("Removed item", {
       icon: "❌",
@@ -546,6 +572,23 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
+                <tr className = "border border-gray-200">
+                  <td className="border border-gray-200 p-2 text-center">
+                    Lifetime Total
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    {totalCalories}
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    {totalProtein}
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    {totalCarbs}
+                  </td>
+                  <td className="border border-gray-200 p-2 text-center">
+                    {totalSugars}
+                  </td>
+                </tr>
                 {orderHistory.map((row: any, i: number) => (
                   <tr key={i} className="border border-gray-200">
                     <td className="border border-gray-200 p-2 text-center">
