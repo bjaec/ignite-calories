@@ -398,7 +398,7 @@ export default function Home() {
     );
   }
 
-  // Renders this if fetchnig user data
+  // Renders this if fetching user data
   if (user && loadingUserdata) {
     return (
       <>
