@@ -7,7 +7,7 @@ const app = initializeApp(firebaseConfig);
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
 import { SyncLoader } from "react-spinners";
-
+import * as React from 'react';
 
 import {
   getAuth,
@@ -40,40 +40,75 @@ type Order = {
   sugars: string;
 };
 
-const restaurants: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
+type Restaurant = {
+  name: string;
+  items: {
+    food: string;
+    calories: number;
+    protein: number;
+    carbs: number;
+    sugars: number;
+  }[];
+};
+
+const restaurants: Restaurant[] = [
   {
     name: "Devils Krafthouse",
-    food: "BBQ Chicken Burger",
-    calories: 100,
-    protein: 200,
-    carbs: 300,
-    sugars: 400,
+    items: [
+      {
+        food: "BBQ Chicken Burger",
+        calories: 100,
+        protein: 200,
+        carbs: 300,
+        sugars: 400,
+      },
+      {
+        food: "BBQ Bacon Burger",
+        calories: 100,
+        protein: 200,
+        carbs: 300,
+        sugars: 400,
+      },
+    ],
   },
   {
     name: "Tandoor",
-    food: "Vegetable Samosa",
-    calories: 100,
-    protein: 200,
-    carbs: 300,
-    sugars: 400,
+    items: [
+      {
+        food: "Vegetable Samosa",
+        calories: 100,
+        protein: 200,
+        carbs: 300,
+        sugars: 400,
+      },
+    ],
   },
   {
     name: "Il Forno",
-    food: "California (Teriyaki Tofu)",
-    calories: 100,
-    protein: 200,
-    carbs: 300,
-    sugars: 400,
+    items: [
+      {
+        food: "California (Teriyaki Tofu)",
+        calories: 100,
+        protein: 200,
+        carbs: 300,
+        sugars: 400,
+      },
+    ],
   },
   {
     name: "The Skillet",
-    food: "Blue Plate Scramble",
-    calories: 100,
-    protein: 200,
-    carbs: 300,
-    sugars: 400,
+    items: [
+      {
+        food: "Blue Plate Scramble",
+        calories: 100,
+        protein: 200,
+        carbs: 300,
+        sugars: 400,
+      },
+    ],
   },
 ];
+
 
 export default function Home() {
   const [loadingUserdata, setLoadingUserdata] = useState<boolean>(true);
@@ -471,37 +506,67 @@ export default function Home() {
               </tr>
             </thead>
             <tbody>
-              {restaurants.map((row: any, i: number) => (
-                <tr key={i} className="border border-gray-200">
-                  <td className="border border-gray-200 p-2 text-center">
-                    {row.name}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {row.food}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {row.calories}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {row.protein}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {row.carbs}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {row.sugars}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    <button
-                      className="bg-black rounded-lg px-4 py-2 text-white"
-                      onClick={() => orderItem(row)}
-                    >
-                      add
-                    </button>
-                  </td>
-                </tr>
+              {restaurants.map((restaurant: any, i: number) => (
+                <React.Fragment key={i}>
+                  <tr className="border border-gray-200">
+                    <td rowSpan={restaurant.items.length} className="border border-gray-200 p-2 text-center">
+                      {restaurant.name}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {restaurant.items[0].food}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {restaurant.items[0].calories}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {restaurant.items[0].protein}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {restaurant.items[0].carbs}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {restaurant.items[0].sugars}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      <button
+                        className="bg-black rounded-lg px-4 py-2 text-white"
+                        onClick={() => orderItem(restaurant.items[0])}
+                      >
+                        add
+                      </button>
+                    </td>
+                  </tr>
+                  {restaurant.items.slice(1).map((item: any, j: number) => (
+                    <tr key={`${i}-${j}`} className="border border-gray-200">
+                      <td className="border border-gray-200 p-2 text-center">
+                        {item.food}
+                      </td>
+                      <td className="border border-gray-200 p-2 text-center">
+                        {item.calories}
+                      </td>
+                      <td className="border border-gray-200 p-2 text-center">
+                        {item.protein}
+                      </td>
+                      <td className="border border-gray-200 p-2 text-center">
+                        {item.carbs}
+                      </td>
+                      <td className="border border-gray-200 p-2 text-center">
+                        {item.sugars}
+                      </td>
+                      <td className="border border-gray-200 p-2 text-center">
+                        <button
+                          className="bg-black rounded-lg px-4 py-2 text-white"
+                          onClick={() => orderItem(item)}
+                        >
+                          add
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </React.Fragment>
               ))}
             </tbody>
+
           </table>
 
           {/* Nutritional Metrics */}
