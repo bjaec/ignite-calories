@@ -414,7 +414,7 @@ export default function Home() {
               Nutrition Tracker
             </h1>
             <a
-              href="https://github.com/JJZFIVE"
+              href="https://github.com/joshisacow/ignite-calories"
               rel="noreferrer"
               target="_blank"
               className="w-fit mt-3"
@@ -464,7 +464,7 @@ export default function Home() {
                 <th className="border border-gray-200 p-2">Name</th>
                 <th className="border border-gray-200 p-2">Food</th>
                 <th className="border border-gray-200 p-2">Calories</th>
-                <th className="border border-gray-200 p-2">in</th>
+                <th className="border border-gray-200 p-2">Protein</th>
                 <th className="border border-gray-200 p-2">Carbs</th>
                 <th className="border border-gray-200 p-2">Sugars</th>
                 <th className="border border-gray-200 p-2">Order</th>
