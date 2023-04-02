@@ -179,6 +179,49 @@ const restaurants: Restaurant[] = [
     carbs: 32,
     sugars: 4,
     },
+    {
+      food: "Broccoli Cheddar Soup",
+      calories: 360,
+      protein: 14,
+      carbs: 30,
+      sugars: 6,
+      },
+  {
+      food: "Broccoli Cheddar Mac and Cheese",
+      calories: 380,
+      protein: 13,
+      carbs: 25,
+      sugars: 5,
+      },
+  {
+      food: "Broccoli Cheddar Soup Bread Bowl",
+      calories: 900,
+      protein: 35,
+      carbs: 149,
+      sugars: 6,
+      },
+  {
+      food: "Chipotle Chicken & Bacon Flatbread Pizza",
+      calories: 940,
+      protein: 45,
+      carbs: 89,
+      sugars: 7,
+      },
+  {
+      food: "Sausage and Pepperoni Flatbread Pizza",
+      calories: 870,
+      protein: 43,
+      carbs: 88,
+      sugars: 4,
+      },
+  {
+      food: "Mac and Cheese",
+      calories: 950,
+      protein: 17,
+      carbs: 66,
+      sugars: 7,
+      },
+  
     ],
     },
     {
@@ -323,6 +366,26 @@ const restaurants: Restaurant[] = [
             carbs: 12,
             sugars: 10,
           },
+          {
+            food: "Hickory Smoked NC Pork",
+            calories: 330,
+            protein: 33,
+            carbs: 5,
+            sugars: 3,
+          },{
+            food: "Bacon Collar Greens",
+            calories: 210,
+            protein: 15,
+            carbs: 24,
+            sugars: 3,
+          },{
+            food: "White Cheddar Macaroni and Cheese",
+            calories: 180,
+            protein: 9,
+            carbs: 10,
+            sugars: 4,
+          },        
+
         
         ],
         },
@@ -369,6 +432,49 @@ const restaurants: Restaurant[] = [
             },
           ],
           },
+          {
+            name: "The Loop Pizza Grill",
+            items: [
+              {
+                food: "Bacon Cheddar Burger",
+                calories: 880,
+                protein: 66,
+                carbs: 4,
+                sugars: 1,
+              },
+            {
+                food: "Great American Cheeseburger",
+                calories: 590,
+                protein: 44,
+                carbs: 3,
+                sugars: 1,
+              },{
+                food: "Mushroom Swiss Burger",
+                calories: 540,
+                protein: 41,
+                carbs: 4,
+                sugars: 1,
+              },{
+                food: "Grilled Fish Sandwich",
+                calories: 210,
+                protein: 28,
+                carbs: 9,
+                sugars: 4,
+              },{
+                food: "BBQ Bacon Cheddar Chicken",
+                calories: 480,
+                protein: 46,
+                carbs: 5,
+                sugars: 2,
+              },{
+                food: "Chicken Tender Platter",
+                calories: 500,
+                protein: 23,
+                carbs: 29,
+                sugars: 8,
+              },
+            ],
+            },
 
 ];
 
