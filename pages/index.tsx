@@ -25,6 +25,7 @@ import {
   arrayUnion,
   updateDoc,
   arrayRemove,
+  deleteDoc,
 } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -546,6 +547,21 @@ export default function Home() {
       setRefresh(!refresh);
     });
   }
+  async function getOrderHistory() {
+    const docRef = doc(firestore, "orders", user.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setOrderHistory(
+        data?.orderList.sort((a: any, b: any) => b.timestamp - a.timestamp)
+      );
+
+    } else {
+      setOrderHistory(null);
+      setNutritionalMetrics(null);
+    }
+  }
 
   async function orderItem(row: any, name: any) {
     try {
@@ -577,13 +593,24 @@ export default function Home() {
         icon: "✅",
       });
 
-      // Refresh to update the order history
-      setRefresh(!refresh);
+      // Refresh to order history
+      await getOrderHistory();
     } catch (error) {
       toast("Could not order item", {
         icon: "❌",
       });
     }
+  }
+  async function clearHistory() {
+    try {
+      await deleteDoc(doc(firestore, 'orders', user.uid));
+      setOrderHistory(null);
+    } catch(error) {
+      console.error('Error clearing history', error)
+    }
+    toast("Cleared history", {
+      icon: "❌",
+    });
   }
 
   async function removeItem(row: any) {
@@ -595,7 +622,9 @@ export default function Home() {
     toast("Removed item", {
       icon: "❌",
     });
-    setRefresh(!refresh);
+    
+    // refresh order history
+    getOrderHistory();
   }
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
@@ -830,8 +859,15 @@ export default function Home() {
             </table>
           
           {/* Order History */}
-          <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">Order History</h2>
-            
+          <div className="flex justify-between items-center border-t-2 border-gray-300 pt-4 mt-8">
+            <h2 className="font-bold text-left text-xl">Order History</h2>
+            <button
+              className="bg-black rounded-lg px-4 py-2 text-white text-right"
+              onClick={() => clearHistory()}
+            >
+              clear
+            </button>
+          </div>  
           {orderHistory ? (
             <table className="w-full border-collapse border border-gray-200 mt-4">
               <thead>
