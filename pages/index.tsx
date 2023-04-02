@@ -464,7 +464,7 @@ export default function Home() {
                 <th className="border border-gray-200 p-2">Name</th>
                 <th className="border border-gray-200 p-2">Food</th>
                 <th className="border border-gray-200 p-2">Calories</th>
-                <th className="border border-gray-200 p-2">Protein</th>
+                <th className="border border-gray-200 p-2">in</th>
                 <th className="border border-gray-200 p-2">Carbs</th>
                 <th className="border border-gray-200 p-2">Sugars</th>
                 <th className="border border-gray-200 p-2">Order</th>
@@ -506,55 +506,37 @@ export default function Home() {
 
           {/* Nutritional Metrics */}
           <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">Nutritional Metrics</h2>
-            
-          {nutritionalMetrics ? (
             <table className="w-full border-collapse border border-gray-200 mt-2">
-              <thead>
-                <tr className="border border-gray-200">
-                  <th className="border border-gray-200 p-2">Total Calories</th>
-                  <th className="border border-gray-200 p-2">Average Calories Per Day</th>
-                  <th className="border border-gray-200 p-2">Average Protein Per Day</th>
-                  <th className="border border-gray-200 p-2">Average Carbs Per Day</th>
-                  <th className="border border-gray-200 p-2">Average Sugar Intake Per Day</th>
-                </tr>
-              </thead>
-              <tbody>
-                {nutritionalMetrics.map((row: any, i: number) => (
-                  <tr key={i} className="border border-gray-200">
+                <thead>
+                  <tr className="border border-gray-200">
+                    <th className="border border-gray-200 p-2">Total</th>
+                    <th className="border border-gray-200 p-2">Calories</th>
+                    <th className="border border-gray-200 p-2">Protein</th>
+                    <th className="border border-gray-200 p-2">Carbs</th>
+                    <th className="border border-gray-200 p-2">Sugar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border border-gray-200">
                     <td className="border border-gray-200 p-2 text-center">
-                      {row.name}
+                      Lifetime Total
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
-                      {row.calories}
+                      {totalCalories}
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
-                      {row.protein}
+                      {totalProtein}
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
-                      {row.carbs}
+                      {totalCarbs}
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
-                      {row.sugars}
-                    </td>
-                    <td className="border border-gray-200 p-2 text-center">
-                      {row.timestamp.toDate().toLocaleString()}
-                    </td>
-                    <td className="border border-gray-200 p-2 text-center">
-                      <button
-                        className="bg-black rounded-lg px-4 py-2 text-white"
-                        onClick={() => removeItem(row)}
-                      >
-                        remove
-                      </button>
+                      {totalSugars}
                     </td>
                   </tr>
-                ))}
-              </tbody>
+                </tbody>
             </table>
-          ) : (
-            <p>No order history. Order something!</p> //if nothing in the order
-          )}
-
+          
           {/* Order History */}
           <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">Order History</h2>
             
@@ -572,23 +554,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-                <tr className = "border border-gray-200">
-                  <td className="border border-gray-200 p-2 text-center">
-                    Lifetime Total
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {totalCalories}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {totalProtein}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {totalCarbs}
-                  </td>
-                  <td className="border border-gray-200 p-2 text-center">
-                    {totalSugars}
-                  </td>
-                </tr>
+                
                 {orderHistory.map((row: any, i: number) => (
                   <tr key={i} className="border border-gray-200">
                     <td className="border border-gray-200 p-2 text-center">
