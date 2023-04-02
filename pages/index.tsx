@@ -197,8 +197,178 @@ const restaurants: Restaurant[] = [
     carbs: 1,
     sugars: 0,
     },
+    {
+    food: "Gyro Sandwich",
+      calories: 680,
+      protein: 26,
+      carbs: 52,
+      sugars: 6,
+    },{
+      food: "Kobe Beef Sliders",
+      calories: 330,
+      protein: 14,
+      carbs: 21,
+      sugars: 4,
+    },{
+      food: "Turkey Avocado Sandwich",
+      calories: 600,
+      protein: 33,
+      carbs: 52,
+      sugars: 8,
+    },
+    
+    
     ], 
     },
+    {
+      name: "Tandoor Indian Cuisine",
+      items: [
+        {
+          food: "Beef Vindaloo",
+          calories: 200,
+          protein: 32,
+          carbs: 3,
+          sugars: 1,
+        },
+      {
+          food: "Chicken Tikka Dosai",
+          calories: 120,
+          protein: 3,
+          carbs: 22,
+          sugars: 1,
+        },{
+          food: "Basmati Rice Pilaf",
+          calories: 220,
+          protein: 3,
+          carbs: 35,
+          sugars: 0,
+        },{
+          food: "Chicken Biryani",
+          calories: 500,
+          protein: 17,
+          carbs: 74,
+          sugars: 1,
+        },{
+          food: "Chicken 65",
+          calories: 180,
+          protein: 23,
+          carbs: 14,
+          sugars: 0,
+        },{
+          food: "Naan",
+          calories: 140,
+          protein: 4,
+          carbs: 29,
+          sugars: 0,
+        },{
+          food: "Beef Vindaloo",
+          calories: 200,
+          protein: 32,
+          carbs: 3,
+          sugars: 1,
+        },
+      ],
+      },
+      {
+        name: "The Skillet",
+        items: [
+          {
+            food: "Pulled Pork Sandwich",
+            calories: 200,
+            protein: 34,
+            carbs: 35,
+            sugars: 5,
+          },
+        {
+            food: "Pulled Pork Sandwich",
+            calories: 200,
+            protein: 34,
+            carbs: 35,
+            sugars: 5,
+          },{
+            food: "Pulled Pork Sandwich",
+            calories: 200,
+            protein: 34,
+            carbs: 35,
+            sugars: 5,
+          },{
+            food: "Potato Wedges",
+            calories: 140,
+            protein: 3,
+            carbs: 23,
+            sugars: 0,
+          },{
+            food: "Pulled Pork Sandwich",
+            calories: 200,
+            protein: 34,
+            carbs: 35,
+            sugars: 5,
+          },{
+            food: "Fried Egg BLT Sandwich",
+            calories: 570,
+            protein: 19,
+            carbs: 6,
+            sugars: 0,
+          },{
+            food: "Grilled Cheese",
+            calories: 730,
+            protein: 32,
+            carbs: 3,
+            sugars: 0,
+          },{
+            food: "Creamy Cole Slaw",
+            calories: 170,
+            protein: 1,
+            carbs: 12,
+            sugars: 10,
+          },
+        
+        ],
+        },
+        {
+          name: "The Pitchfork",
+          items: [
+            {
+              food: "Chicken Wings",
+              calories: 1120,
+              protein: 105,
+              carbs: 0,
+              sugars: 0,
+            },
+          {
+              food: "Fried Chicken Sandwich",
+              calories: 720,
+              protein: 27,
+              carbs: 52,
+              sugars: 11,
+            },{
+              food: "Grilled Cheese Sandwich",
+              calories: 830,
+              protein: 30,
+              carbs: 48,
+              sugars: 0,
+            },{
+              food: "Pulled Pork Barbecue Sandwich",
+              calories: 440,
+              protein: 32,
+              carbs: 45,
+              sugars: 12,
+            },{
+              food: "Fries",
+              calories: 270,
+              protein: 4,
+              carbs: 40,
+              sugars: 2,
+            },{
+              food: "Tots",
+              calories: 340,
+              protein: 4,
+              carbs: 38,
+              sugars: 0,
+            },
+          ],
+          },
+
 ];
 
 
@@ -633,9 +803,9 @@ export default function Home() {
                   <tr className="border border-gray-200">
                     <th className="border border-gray-200 p-2">Total</th>
                     <th className="border border-gray-200 p-2">Calories</th>
-                    <th className="border border-gray-200 p-2">Protein</th>
-                    <th className="border border-gray-200 p-2">Carbs</th>
-                    <th className="border border-gray-200 p-2">Sugar</th>
+                    <th className="border border-gray-200 p-2">Protein (g)</th>
+                    <th className="border border-gray-200 p-2">Carbs (g)</th>
+                    <th className="border border-gray-200 p-2">Sugar (g)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -668,9 +838,9 @@ export default function Home() {
                 <tr className="border border-gray-200">
                   <th className="border border-gray-200 p-2">Order</th>
                   <th className="border border-gray-200 p-2">Calories</th>
-                  <th className="border border-gray-200 p-2">Protein</th>
-                  <th className="border border-gray-200 p-2">Carbs</th>
-                  <th className="border border-gray-200 p-2">Sugar</th>
+                  <th className="border border-gray-200 p-2">Protein (g)</th>
+                  <th className="border border-gray-200 p-2">Carbs (g)</th>
+                  <th className="border border-gray-200 p-2">Sugar (g)</th>
                   <th className="border border-gray-200 p-2">Date</th>
                   <th className="border border-gray-200 p-2">Remove</th>
                 </tr>
