@@ -42,23 +42,15 @@ type Order = {
 
 const restaurants: { name: string; food: string; calories: number, protein: number, carbs: number, sugars: number }[] = [
   {
-    name: "Il Forno",
-    food: "Chicekn Basil Pesto Pasta ",
-    calories: 800,
-    protein: 36,
-    carbs: 110,
-    sugars: 3,
+    name: "Devils Krafthouse",
+    food: "BBQ Chicken Burger",
+    calories: 100,
+    protein: 200,
+    carbs: 300,
+    sugars: 400,
   },
   {
-    name: "Il Forno",
-    food: "Meatball and Spaghetti Pasta",
-    calories: 380,
-    protein: 18,
-    carbs: 46,
-    sugars: 3,
-  },
-  {
-    name: "Il Forno",
+    name: "Tandoor",
     food: "Vegetable Samosa",
     calories: 100,
     protein: 200,
@@ -96,6 +88,10 @@ export default function Home() {
   const [nutritionalMetrics, setNutritionalMetrics] = useState<Order[] | null>(null); //initialized with value of null
   //hold array of 'Order' objects, setter function will update the values
   const [orderHistory, setOrderHistory] = useState<Order[] | null>(null);
+  const [totalCalories, setTotalCalories] = useState(0);
+  const [totalProtein, setTotalProtein] = useState(0);
+  const [totalCarbs, setTotalCarbs] = useState(0);
+  const [totalSugars, setTotalSugars] = useState(0);
 
   // Get all user data
   useEffect(() => {
@@ -197,6 +193,28 @@ export default function Home() {
     loadEverything();
   }, [user, refresh]);
 
+  useEffect(() => {
+    if (orderHistory) {
+      const caloriesSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.calories, 0);
+      setTotalCalories(caloriesSum);
+      
+      const proteinSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.protein, 0);
+      setTotalProtein(proteinSum);
+      
+      const carbsSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.carbs, 0);
+      setTotalCarbs(carbsSum);
+      
+      const sugarSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.sugars, 0);
+      setTotalSugars(sugarSum);
+    } else {
+      setTotalCalories(0);
+      setTotalProtein(0);
+      setTotalCarbs(0);
+      setTotalSugars(0);
+    }
+  }, [orderHistory]);
+
+
   async function saveSettings() {
     if (!user) return;
 
@@ -276,7 +294,7 @@ export default function Home() {
     try {
       await updateDoc(doc(firestore, 'orders', user.uid), {orderList: arrayRemove(row)});
     } catch (error) {
-      console.error('Error deleting item: ', error);
+      console.error('Error removing item: ', error);
     }
     toast("Removed item", {
       icon: "❌",
@@ -518,10 +536,10 @@ export default function Home() {
                   </tr>
                 </tbody>
             </table>
-         
+          
           {/* Order History */}
           <h2 className="pt-4 mt-8 font-bold text-left border-t-2 border-gray-300 text-xl">Order History</h2>
-           
+            
           {orderHistory ? (
             <table className="w-full border-collapse border border-gray-200 mt-2">
               <thead>
@@ -536,10 +554,7 @@ export default function Home() {
                 </tr>
               </thead>
               <tbody>
-<<<<<<< HEAD
-=======
-               
->>>>>>> ffdc7947ac2a7c315d2bf8c1d5a34ff0af7b6446
+                
                 {orderHistory.map((row: any, i: number) => (
                   <tr key={i} className="border border-gray-200">
                     <td className="border border-gray-200 p-2 text-center">
