@@ -53,60 +53,151 @@ type Restaurant = {
 
 const restaurants: Restaurant[] = [
   {
-    name: "Devils Krafthouse",
-    items: [
-      {
-        food: "BBQ Chicken Burger",
-        calories: 100,
-        protein: 200,
-        carbs: 300,
-        sugars: 400,
-      },
-      {
-        food: "BBQ Bacon Burger",
-        calories: 100,
-        protein: 200,
-        carbs: 300,
-        sugars: 400,
-      },
-    ],
-  },
-  {
-    name: "Tandoor",
-    items: [
-      {
-        food: "Vegetable Samosa",
-        calories: 100,
-        protein: 200,
-        carbs: 300,
-        sugars: 400,
-      },
-    ],
-  },
-  {
     name: "Il Forno",
     items: [
-      {
-        food: "California (Teriyaki Tofu)",
-        calories: 100,
-        protein: 200,
-        carbs: 300,
-        sugars: 400,
-      },
+    {
+    food: "Chicken Basil Pesto Pasta",
+    calories: 800,
+    protein: 36,
+    carbs: 110,
+    sugars: 3,
+    },
+    {
+    food: "Meatball and Spaghetti Pasta",
+    calories: 380,
+    protein: 18,
+    carbs: 46,
+    sugars: 3,
+    },
+    {
+    food: "Parma Rosa",
+    calories: 440,
+    protein: 30,
+    carbs: 49,
+    sugars: 5,
+    },
+    {
+    food: "Salmon Alfredo Pasta",
+    calories: 430,
+    protein: 26,
+    carbs: 43,
+    sugars: 1,
+    },
+    {
+    food: "Spicy Il Forno Pasta",
+    calories: 480,
+    protein: 19,
+    carbs: 50,
+    sugars: 8,
+    },
+    {
+    food: "Buffalo Chicken Pasta",
+    calories: 1450,
+    protein: 62,
+    carbs: 154,
+    sugars: 14,
+    },
+    {
+    food: "Kyle's BBQ Pizza",
+    calories: 1350,
+    protein: 45,
+    carbs: 167,
+    sugars: 12,
+    },
+    {
+    food: "Margarita Pizza",
+    calories: 1020,
+    protein: 33,
+    carbs: 132,
+    sugars: 12,
+    },
+    {
+    food: "PJ's New Yorker",
+    calories: 1220,
+    protein: 50,
+    carbs: 146,
+    sugars: 15,
+    },
     ],
-  },
-  {
-    name: "The Skillet",
+    },
+    {
+    name: "Gyotaku",
     items: [
-      {
-        food: "Blue Plate Scramble",
-        calories: 100,
-        protein: 200,
-        carbs: 300,
-        sugars: 400,
-      },
+    {
+    food: "Arctic Sushi Burrito",
+    calories: 360,
+    protein: 14,
+    carbs: 49,
+    sugars: 11,
+    },
+    {
+    food: "Blossom Roll",
+    calories: 420,
+    protein: 22,
+    carbs: 42,
+    sugars: 10,
+    },
+    {
+    food: "Dancing Eel Roll",
+    calories: 390,
+    protein: 15,
+    carbs: 45,
+    sugars: 11,
+    },
+    {
+    food: "Salmon Crunch Roll",
+    calories: 350,
+    protein: 19,
+    carbs: 35,
+    sugars: 8,
+    },
+    {
+    food: "Shrimp Tempura Roll",
+    calories: 320,
+    protein: 10,
+    carbs: 42,
+    sugars: 9,
+    },
     ],
-  },
+    },
+    {
+    name: "Panera Bread",
+    items: [
+    {
+    food: "Bacon Egg Cheese on Asiago Cheese Bagel",
+    calories: 510,
+    protein: 20,
+    carbs: 60,
+    sugars: 6,
+    },
+    {
+    food: "Chipotle Chicken Scr Egg & Avocado Wrap",
+    calories: 470,
+    protein: 29,
+    carbs: 32,
+    sugars: 4,
+    },
+    ],
+    },
+    {
+    name: "The Farmstead",
+    items: [
+    {
+    food: "Honey Garlic Chicken",
+    calories: 320,
+    protein: 31,
+    carbs: 29,
+    sugars: 23,
+    },
+    {
+    food: "Herb Roasted Turkey",
+    calories: 270,
+    protein: 40,
+    carbs: 1,
+    sugars: 0,
+    },
+    ], 
+    },
 ];
 
 
