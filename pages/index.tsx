@@ -489,16 +489,25 @@ export default function Home() {
   const [biography, setBiography] = useState("");
   const [year, setYear] = useState("");
   const [email, setEmail] = useState("");
-  const [foodpoints, setFoodpoints] = useState<number>(0);
   const [image, setImage] = useState<string | null>(null);
   const [nutritionalMetrics, setNutritionalMetrics] = useState<Order[] | null>(null); //initialized with value of null
-  //hold array of 'Order' objects, setter function will update the values
   const [orderHistory, setOrderHistory] = useState<Order[] | null>(null);
   const [totalCalories, setTotalCalories] = useState(0);
   const [totalProtein, setTotalProtein] = useState(0);
   const [totalCarbs, setTotalCarbs] = useState(0);
   const [totalSugars, setTotalSugars] = useState(0);
   const [averageCalories, setAverageCalories] = useState(0);
+  const [averageProtein, setAverageProtein] = useState(0);
+  const [averageCarbs, setAverageCarbs] = useState(0);
+  const [averageSugars, setAverageSugars] = useState(0);
+  const [weeklyAverageCalories, setWeeklyAverageCalories] = useState(0);
+  const [weeklyAverageProtein, setWeeklyAverageProtein] = useState(0);
+  const [weeklyAverageCarbs, setWeeklyAverageCarbs] = useState(0);
+  const [weeklyAverageSugars, setWeeklyAverageSugars] = useState(0);
+  const [dailyCalories, setDailyCalories] = useState(0);
+  const [dailyProtein, setDailyProtein] = useState(0);
+  const [dailyCarbs, setDailyCarbs] = useState(0);
+  const [dailySugars, setDailySugars] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
   // Get all user data
@@ -518,7 +527,6 @@ export default function Home() {
         setYear(data?.year);
         setEmail(user?.email ? user.email : "");
         console.log(data);
-        setFoodpoints(data?.foodpoints);
       } else {
         // If data not pushed yet, push to database!
 
@@ -528,7 +536,6 @@ export default function Home() {
             name: user?.displayName ? user?.displayName : "",
             biography: "",
             year: "",
-            foodpoints: 999,
           },
           { merge: true }
         );
@@ -605,44 +612,87 @@ export default function Home() {
 
   useEffect(() => {
     if (orderHistory) {
+      // set lifetime nutritional metrics
       const caloriesSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.calories, 0);
       setTotalCalories(caloriesSum);
-      
       const proteinSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.protein, 0);
       setTotalProtein(proteinSum);
-      
       const carbsSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.carbs, 0);
       setTotalCarbs(carbsSum);
-      
       const sugarSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.sugars, 0);
       setTotalSugars(sugarSum);
 
-      // Assuming orderHistory is an array of orders with a timestamp field
+      const ONE_WEEK_IN_MS = 604800000; // 7 days * 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+      const ONE_DAY_IN_MS = 86400000; // 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
 
-      // First, get the start and end dates for the week you're interested in
-      const endDate = new Date(); // current date
-      const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 1);
+      const curr = new Date();
+      const oneWeekAgo = new Date(curr.getTime() - ONE_WEEK_IN_MS);
+      const oneDayAgo = new Date(curr.getTime() - ONE_DAY_IN_MS);
 
-
-
-      // Then, filter the orders to only include those within the desired week
-      const ordersThisWeek = orderHistory.filter(order => {
-        const orderDate = order.timestamp;
-        return orderDate >= startDate && orderDate <= endDate; //within the days
+      // filter for orders from the past week
+      const ordersThisWeek = orderHistory.filter((order: Order) => {
+        const orderDate = order.timestamp.toDate();
+        return orderDate >= oneWeekAgo && orderDate <= curr;
       });
-      
-      console.log(ordersThisWeek);
-      // Next, calculate the total calories for the week
-      const totalCalories = ordersThisWeek.reduce((acc: any, curr: any) => acc + Number(curr.calories), 0);
 
+      // calculate the total calories for the week
+      const totalCalories = ordersThisWeek.reduce((acc: any, curr: any) => acc + Number(curr.calories), 0);
+      const totalProtein = ordersThisWeek.reduce((acc: any, curr: any) => acc + Number(curr.protein), 0);
+      const totalCarbs = ordersThisWeek.reduce((acc: any, curr: any) => acc + Number(curr.carbs), 0);
+      const totalSugars = ordersThisWeek.reduce((acc: any, curr: any) => acc + Number(curr.sugars), 0);
+
+      // Finally, calculate the average calories per order
       let averageCaloriesPerOrder = 0;
+      let averageProteinPerOrder = 0;
+      let averageCarbsPerOrder = 0;
+      let averageSugarsPerOrder = 0;
+      let wAverageCaloriesPerOrder = 0;
+      let wAverageProteinPerOrder = 0;
+      let wAverageCarbsPerOrder = 0;
+      let wAverageSugarsPerOrder = 0;
       if (ordersThisWeek.length > 0) {
-        averageCaloriesPerOrder = totalCalories / ordersThisWeek.length;
+        averageCaloriesPerOrder = parseFloat((totalCalories / ordersThisWeek.length).toFixed(1));
+        averageProteinPerOrder = parseFloat((totalProtein / ordersThisWeek.length).toFixed(1));
+        averageCarbsPerOrder = parseFloat((totalCarbs / ordersThisWeek.length).toFixed(1));
+        averageSugarsPerOrder = parseFloat((totalSugars / ordersThisWeek.length).toFixed(1));
+      }
+      if (ordersThisWeek.length > 0) {
+        wAverageCaloriesPerOrder = parseFloat((totalCalories / 7).toFixed(1));
+        wAverageProteinPerOrder = parseFloat((totalProtein / 7).toFixed(1));
+        wAverageCarbsPerOrder = parseFloat((totalCarbs / 7).toFixed(1));
+        wAverageSugarsPerOrder = parseFloat((totalSugars / 7).toFixed(1));
       }
 
+      //set state of calculated metrics
 
-
+      setWeeklyAverageCalories(wAverageCaloriesPerOrder);
+      setWeeklyAverageProtein(wAverageProteinPerOrder);
+      setWeeklyAverageCarbs(wAverageCarbsPerOrder);
+      setWeeklyAverageSugars(wAverageSugarsPerOrder);
+      
       setAverageCalories(averageCaloriesPerOrder);
+      setAverageProtein(averageProteinPerOrder);
+      setAverageCarbs(averageCarbsPerOrder);
+      setAverageSugars(averageSugarsPerOrder);
+
+      //filter for orders from the past day
+      const ordersToday = orderHistory.filter((order: Order) => {
+        const orderDate = order.timestamp.toDate();
+        return orderDate >= oneDayAgo && orderDate <= curr;
+      });
+
+      const dailyTotalCalories = ordersToday.reduce((acc: any, curr: any) => acc + Number(curr.calories), 0);
+      const dailyTotalProtein = ordersToday.reduce((acc: any, curr: any) => acc + Number(curr.protein), 0);
+      const dailyTotalCarbs = ordersToday.reduce((acc: any, curr: any) => acc + Number(curr.carbs), 0);
+      const dailyTotalSugars = ordersToday.reduce((acc: any, curr: any) => acc + Number(curr.sugars), 0);
+
+      // set state of daily metrics
+
+      setDailyCalories(dailyTotalCalories);
+      setDailyProtein(dailyTotalProtein);
+      setDailyCarbs(dailyTotalCarbs);
+      setDailySugars(dailyTotalSugars);
+
 
     } else {
       setTotalCalories(0);
@@ -716,15 +766,6 @@ export default function Home() {
             sugars: row.sugars,
             timestamp: Timestamp.fromDate(new Date()),
           }),
-        },
-        { merge: true }
-      );
-
-      // Update foodpoints
-      await setDoc(
-        doc(firestore, "users", user.uid),
-        {
-          foodpoints: foodpoints - row.price,
         },
         { merge: true }
       );
@@ -978,6 +1019,64 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody>
+                  
+                  <tr className="border border-gray-200">
+                    <td className="border border-gray-200 p-2 text-center">
+                      Daily Total
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {dailyCalories}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {dailyProtein}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {dailyCarbs}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {dailySugars}
+                    </td>
+
+                  </tr>
+
+                  <tr className="border border-gray-200">
+                    <td className="border border-gray-200 p-2 text-center">
+                      Average / Order (Past Week)
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {averageCalories}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {averageProtein}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {averageCarbs}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {averageSugars}
+                    </td>
+
+                  </tr>
+
+                  <tr className="border border-gray-200">
+                    <td className="border border-gray-200 p-2 text-center">
+                      Daily Average (Past Week)
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {weeklyAverageCalories}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {weeklyAverageProtein}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {weeklyAverageCarbs}
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {weeklyAverageSugars}
+                    </td>
+
+                  </tr>
+
                   <tr className="border border-gray-200">
                     <td className="border border-gray-200 p-2 text-center">
                       Lifetime Total
@@ -993,15 +1092,6 @@ export default function Home() {
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
                       {totalSugars}
-                    </td>
-                  </tr>
-
-                  <tr className="border border-gray-200">
-                    <td className="border border-gray-200 p-2 text-center">
-                      Daily Averages
-                    </td>
-                    <td className="border border-gray-200 p-2 text-center">
-                      {averageCalories}
                     </td>
                   </tr>
                 </tbody>
