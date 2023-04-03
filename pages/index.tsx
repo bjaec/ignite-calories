@@ -10,6 +10,7 @@ import { SyncLoader } from "react-spinners";
 import * as React from 'react';
 import Accordion from './Accordion';
 
+
 import {
   getAuth,
   signInWithPopup,
@@ -40,6 +41,7 @@ type Order = {
   protein: string;
   carbs: string;
   sugars: string;
+  timestamp: Date;
 };
 
 type Restaurant = {
@@ -496,6 +498,7 @@ export default function Home() {
   const [totalProtein, setTotalProtein] = useState(0);
   const [totalCarbs, setTotalCarbs] = useState(0);
   const [totalSugars, setTotalSugars] = useState(0);
+  const [averageCalories, setAverageCalories] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
   // Get all user data
@@ -598,6 +601,8 @@ export default function Home() {
     loadEverything();
   }, [user, refresh]);
 
+  
+
   useEffect(() => {
     if (orderHistory) {
       const caloriesSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.calories, 0);
@@ -611,11 +616,40 @@ export default function Home() {
       
       const sugarSum = orderHistory.reduce((acc: any, curr: any) => acc + curr.sugars, 0);
       setTotalSugars(sugarSum);
+
+      // Assuming orderHistory is an array of orders with a timestamp field
+
+      // First, get the start and end dates for the week you're interested in
+      const endDate = new Date(); // current date
+      const startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 1);
+
+
+
+      // Then, filter the orders to only include those within the desired week
+      const ordersThisWeek = orderHistory.filter(order => {
+        const orderDate = order.timestamp;
+        return orderDate >= startDate && orderDate <= endDate; //within the days
+      });
+      
+      console.log(ordersThisWeek);
+      // Next, calculate the total calories for the week
+      const totalCalories = ordersThisWeek.reduce((acc: any, curr: any) => acc + Number(curr.calories), 0);
+
+      let averageCaloriesPerOrder = 0;
+      if (ordersThisWeek.length > 0) {
+        averageCaloriesPerOrder = totalCalories / ordersThisWeek.length;
+      }
+
+
+
+      setAverageCalories(averageCaloriesPerOrder);
+
     } else {
       setTotalCalories(0);
       setTotalProtein(0);
       setTotalCarbs(0);
       setTotalSugars(0);
+      setAverageCalories(0);
     }
   }, [orderHistory]);
 
@@ -959,6 +993,15 @@ export default function Home() {
                     </td>
                     <td className="border border-gray-200 p-2 text-center">
                       {totalSugars}
+                    </td>
+                  </tr>
+
+                  <tr className="border border-gray-200">
+                    <td className="border border-gray-200 p-2 text-center">
+                      Daily Averages
+                    </td>
+                    <td className="border border-gray-200 p-2 text-center">
+                      {averageCalories}
                     </td>
                   </tr>
                 </tbody>
