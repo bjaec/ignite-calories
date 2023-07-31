@@ -63,7 +63,6 @@ export default function Home() {
   const [year, setYear] = useState("");
   const [email, setEmail] = useState("");
   const [image, setImage] = useState<string | null>(null);
-  const [nutritionalMetrics, setNutritionalMetrics] = useState<Order[] | null>(null); //initialized with value of null
   const [orderHistory, setOrderHistory] = useState<Order[] | null>(null);
   const [totalCalories, setTotalCalories] = useState(0);
   const [totalProtein, setTotalProtein] = useState(0);
@@ -166,7 +165,6 @@ export default function Home() {
 
       } else {
         setOrderHistory(null);
-        setNutritionalMetrics(null);
       }
     }
 
@@ -181,7 +179,7 @@ export default function Home() {
   }, [user, refresh]);
 
   
-
+  // calculate nutrional metrics
   useEffect(() => {
     if (orderHistory) {
       // set lifetime nutritional metrics
@@ -321,7 +319,6 @@ export default function Home() {
 
     } else {
       setOrderHistory(null);
-      setNutritionalMetrics(null);
     }
   }
 
@@ -440,6 +437,8 @@ export default function Home() {
     );
   }
 
+
+  // renders if not logged in
   if (!user) {
     return (
       <>
