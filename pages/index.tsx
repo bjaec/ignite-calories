@@ -1,23 +1,18 @@
 import Image from "next/image";
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { initializeApp } from "firebase/app";
-import firebaseConfig from "../firebase/config";
-const app = initializeApp(firebaseConfig);
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import toast, { Toaster } from "react-hot-toast";
 import { SyncLoader } from "react-spinners";
-import * as React from 'react';
+import { useAuthState } from "react-firebase-hooks/auth";
 import Accordion from './Accordion';
 import data from '../data/data.json';
 
 
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut,
-} from "firebase/auth";
+// firebase setup
+import { initializeApp } from "firebase/app";
+import firebaseConfig from "../firebase/config";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 import {
   getFirestore,
   setDoc,
@@ -29,8 +24,8 @@ import {
   arrayRemove,
   deleteDoc,
 } from "firebase/firestore";
-import { useAuthState } from "react-firebase-hooks/auth";
 
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
 const storage = getStorage(app);
